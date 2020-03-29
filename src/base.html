@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery validation.js</title>
+  <style type="text/css">
+    body{font-size:12px;}
+    #Form { width: 870px; }
+    #newsletter_topics { width:95%; margin:10px 0 0 10px; }
+
+    p.error{ line-height:20px; margin:0; padding:0 0 0 10px; }
+    label.error { display: none; margin:0; padding:0; font-size:12px; color:red; }
+    p.submit { text-align:center; }
+    p.submit input { margin:auto; }
+    table { margin:0; padding:0; width:800px; }
+    table tr { line-height:26px; }
+    table th { vertical-align:top; font-weight:normal; text-align:right; padding-right:5px; }
+    table td { vertical-align:top; }
+  </style>
+</head>
+<body>
+  <form method="get" action="./base.html" class="cmxform" id="Form">
+    <fieldset>
+      <legend>入力検証テスト No.01</legend>
+      <table cellspacing="0" cellpadding="0">
+        <col width="200">
+        <col width="600">
+        <tbody>
+          <tr>
+            <th><label for="cname">名前(必須,2文字以上)</label></th>
+            <td>：<input type="text" name="name" value="" id="cname" class="required" minlength="2" /></td>
+          </tr>
+          <tr>
+            <th><label for="cemail">メールアドレス(必須)</label></th>
+            <td>：<input type="text" name="email" value="" size="45" id="cemail" class="required email" /></td>
+          </tr>
+          <tr>
+            <th><label for="curl">ホームページ(optional)</label></th>
+            <td>：<input type="text" name="url" value="" size="45" id="curl" class="required url" /></td>
+          </tr>
+          <tr>
+            <th><label for="ccomment">備考(必須)</label></th>
+            <td>：<textarea name="comment" id="ccomment" cols="45" rows="10" class="required"></textarea></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="submit"><input type="submit" value="送信する"/></p>
+    </fieldset>
+  </form>
+
+  <script src='./js/lib/jquery-1.7.2.js'></script>
+  <script src="./js/jquery.validate.js"></script>
+  <script src="./js/jquery.validate.ex.js"></script>
+  <script src="./js/localization/messages_ja.js"></script>
+  <script>
+    (function($) {
+      $(function() {
+        $("#Form").validate();
+      });
+    })(jQuery);
+  </script>
+</body>
+</html>

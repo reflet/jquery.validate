@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <title>jQuery validation.js</title>
+  <link rel="stylesheet" type="text/css" href="./css/lib/ui-lightness/jquery-ui-1.8.18.custom.css" />
+  <link rel="stylesheet" type="text/css" href="./css/lib/jquery.timepicker.css" />
+  <style type="text/css">
+    body{font-size:12px;}
+    #Form { width: 670px; }
+    #newsletter_topics { width:95%; margin:10px 0 0 10px; }
+
+    p.error{ line-height:20px; margin:0; padding:0 0 0 10px; }
+    label.error { display: none; margin:0; padding:0; font-size:12px; color:red; }
+    p.submit { text-align:center; }
+    p.submit input { margin:auto; }
+    table { margin:0; padding:0; width:600px; }
+    table tr { line-height:26px; }
+    table th { vertical-align:top; font-weight:normal; text-align:right; padding-right:5px; }
+    table td { vertical-align:top; }
+  </style>
+</head>
+<body>
+  <form method="get" action="./extend.html" class="cmxform" id="Form">
+    <fieldset>
+      <legend>入力検証テスト No.02</legend>
+      <div class="error">
+        <ul></ul>
+      </div>
+      <table cellspacing="0" cellpadding="0">
+        <col width="40%">
+        <col width="60%">
+        <tbody>
+          <tr>
+            <th><label for="fname">名前</label></th>
+            <td>：<input type="text" name="name[0]" value="" size="5" id="fname" />&nbsp;<input type="text" name="name[1]" value="" size="5" id="lname" /></td>
+          </tr>
+          <tr>
+            <th><label for="fname_kana">フリガナ</label></th>
+            <td>：<input type="text" name="name_kana[0]" value="" size="5" id="fname_kana" />&nbsp;<input type="text" name="name_kana[1]" value="" size="5" id="lname_kana" /></td>
+          </tr>
+          <tr>
+            <th><label for="password">パスワード</label></th>
+            <td>：<input type="password" name="password" value="" id="password"/></td>
+          </tr>
+          <tr>
+            <th><label for="confirm_password">パスワード(確認)</label></th>
+            <td>：<input type="password" name="confirm_password" value="" id="confirm_password" /></td>
+          </tr>
+          <tr>
+            <th><label for="date_s">日付</label></th>
+            <td>：<input type="text" name="date_s" value="" id="date_s" size="10" />～<input type="text" name="date_e" value="" id="date_e" size="10" /></td>
+          </tr>
+          <tr>
+            <th><label for="time_s">時間(時:分)</label></th>
+            <td>：<input type="text" name="time_s" value="" id="time_s" size="5" />～<input type="text" name="time_e" value="" id="time_e" size="5" /></td>
+          </tr>
+          <tr>
+            <th><label for="timeS">時間(時:分:秒)</label></th>
+            <td>：<input type="text" name="timeS" value="" id="timeS" size="8" /></td>
+          </tr>
+          <tr>
+            <th><label for="zip">郵便番号</label></th>
+            <td>：<input type="text" name="zip" value="" id="zip" size="8" maxlength="8" /></td>
+          </tr>
+          <tr>
+            <th><label for="tel">電話番号</label></th>
+            <td>：<input type="text" name="tel" value="" id="tel" size="12" maxlength="12" /></td>
+          </tr>
+          <tr>
+            <th><label for="mobile">携帯番号</label></th>
+            <td>：<input type="text" name="mobile" value="" id="mobile" size="13" maxlength="13" /></td>
+          </tr>
+          <tr>
+            <th><label for="email">メールアドレス</label></th>
+            <td>：<input type="text" name="email" value="" id="email" /></td>
+          </tr>
+          <tr>
+            <th><label for="agree">利用規約に同意しますか？</label></th>
+            <td>：<input type="checkbox" name="agree" value="true" id="agree" /></td>
+          </tr>
+          <tr>
+            <th><label for="newsletter">メルマガの配信を希望しますか？</label></th>
+            <td>：<input type="checkbox" name="newsletter" value="true" id="newsletter" /></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <fieldset id="newsletter_topics" style="display:none;">
+                <legend>配信希望のメルマガを2つ以上選択してください。</legend>
+                <label for="topic_marketflash"><input type="checkbox" name="topic" value="marketflash" id="topic_marketflash" />Marketflash</label>
+                <label for="topic_fuzz"><input type="checkbox" name="topic" value="fuzz" id="topic_fuzz" />Latest fuzz</label>
+                <label for="topic_digester"><input type="checkbox" name="topic" value="digester" id="topic_digester" />Mailing list digester</label>
+                <p><label for="topic" class="error">配信を希望する場合、2つ以上選択してください。</label></p>
+              </fieldset>
+            </td>
+          </tr>
+          </tbody>
+      </table>
+      <p class="submit"><input type="submit" value="送信する"/></p>
+    </fieldset>
+  </form>
+  <script src='./js/lib/jquery-1.7.2.js'></script>
+  <script src="./js/lib/jquery-ui-1.8.18.custom.js"></script>
+  <script src="./js/jquery.validate.js"></script>
+  <script src="./js/jquery.validate.ex.js"></script>
+  <script src="./js/localization/messages_ja.js"></script>
+  <script src="./js/lib/jquery.timepicker.min.js"></script>
+  <script>
+    (function($) {
+      // Load後に自動実行
+      $(function(){
+        $("#date_s, #date_e").datepicker({dateFormat:'yy/mm/dd'});
+        $('#time_s, #time_e').timepicker({timeFormat:'H:i'});
+        $('#timeS').timepicker({timeFormat:'H:i:s'});
+
+        // Validation対象やルール、オプションを定義
+        $("#Form").validate({
+          groups:{
+            name:'name[0] name[1]',
+            name_kana:'name_kana[0] name_kana[1]',
+            date:'date_s date_e',
+            time:'time_s time_e'
+          },
+          //検証ルール
+          rules: {
+            'name[0]':{required:true,minlength:2},
+            'name[1]':{required:true},
+            'name_kana[0]':{required:true,katakana:true,minlength:2},
+            'name_kana[1]':{required:true,katakana:true},
+            username:{required:true},
+            password:{required:true, alphanum:true, minlength:6},
+            confirm_password:{required:true, equalTo:'#password'},
+            date_s:{required:true, dateCustom:true, dateMore:'#date_e'},
+            date_e:{required:true, dateCustom:true},
+            time_s:{required:true, time:true, timeMore:'#time_e'},
+            time_e:{required:true, time:true},
+            timeS:{required:true, timeS:true},
+            zip:{required:true, zip:true},
+            tel:{required:true, tel:true},
+            mobile:{required:true, mobile:true},
+            email:{required:true, email:true},
+            topic:{required:'#newsletter:checked', minlength:2},
+            agree:"required"
+          },
+          // [▲option]
+          // required,remote,email,url,date,dateISO,number,digits,creditcard,
+          // equalTo,accept,maxlength,minlength,rangelength,range,max,min,
+          // kana,hiragana,katakana,hankana,alpha,alphanum,zip,mobile,tel,dateCustom
+          messages:{},
+          errorClass:'error',
+          validClass:'valid',
+          errorElement:'label',
+          wrapper:'p class="error"',
+          focusInvalid: true,
+          errorContainer:$([]),
+          errorLabelContainer:$([]),
+          onsubmit:true,
+          ignore:':hidden',  // validation対象外
+          ignoreTitle:false,
+          //debug:true,
+          // 送信する直前の処理
+          submitHandler:function(ev) {
+            // フォームを送信
+            ev.submit();
+            alert("submitted!");
+          },
+          // エラー出力先の制御
+          errorPlacement:function(label, element) {
+            if (element.attr('name') == 'name[0]' || element.attr('name') == 'name[1]') {
+              $('#lname').after(label);
+            } else if (element.attr('name') == 'name_kana[0]' || element.attr('name') == 'name_kana[1]') {
+              $('#lname_kana').after(label);
+            } else if (element.attr('name') == 'date_s' || element.attr('name') == 'date_e') {
+              $('#date_e').after(label);
+            } else if (element.attr('name') == 'time_s' || element.attr('name') == 'time_e') {
+              $('#time_e').after(label);
+            } else {
+              element.after(label);
+            }
+          },
+          // その他の関数
+          //invalidHandler:function(form, validator) {},
+          //success:function(label){},
+          //onfocusout:function(element, event){},
+          //onfocusin:function(element, event){},
+          //onkeyup:function(element, event){},
+          //onclick:function(element, event){},
+          //highlight:function(element, errorClass, validClass){},
+          //unhighlight:function(element, errorClass, validClass){},
+          //showErrors:function(errors){},
+        });
+
+        // メルマガの選択のON・OFF制御
+        var newsletter = $('#newsletter'),
+            inital = newsletter.is(':checked'),
+            topics = $('#newsletter_topics')[inital ? 'removeClass' : 'addClass']('gray'),
+            topicInputs = topics.find('input').attr('disabled', !inital);
+        newsletter.on('change', function() {
+          if ($(this).is(':checked')) {
+            $('#newsletter_topics').slideDown(300);
+          } else {
+            $('#newsletter_topics').slideUp(300);
+          }
+        });
+        newsletter.on('click', function() {
+          topics[this.checked ? 'removeClass' : 'addClass']('gray');
+          topicInputs.attr('disabled', !this.checked);
+        });
+      });
+    })(jQuery);
+  </script>
+
+</body>
+</html>
